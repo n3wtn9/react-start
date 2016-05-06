@@ -6,6 +6,7 @@ var browserify = require('browserify');
 var watchify = require('watchify');
 var babelify = require('babelify');
 var streamify = require('gulp-streamify');
+var webserver = require('gulp-webserver');
 
 var path = {
   HTML: 'src/index.html',
@@ -65,3 +66,13 @@ gulp.task('replaceHTML', function(){
 gulp.task('production', ['replaceHTML', 'build']);
 
 gulp.task('default', ['watch']);
+
+gulp.task('serve', ['production'], function() {
+  gulp.src(path.DEST)
+    .pipe(webserver({
+      host: '0.0.0.0',
+      livereload: true,
+      open: true,
+      fallback: 'index.html'
+    }));
+});
