@@ -4,7 +4,7 @@ var htmlreplace = require('gulp-html-replace');
 var source = require('vinyl-source-stream');
 var browserify = require('browserify');
 var watchify = require('watchify');
-var reactify = require('reactify');
+var babelify = require('babelify');
 var streamify = require('gulp-streamify');
 
 var path = {
@@ -14,7 +14,7 @@ var path = {
   DEST: 'dist',
   DEST_BUILD: 'dist/build',
   DEST_SRC: 'dist/src',
-  ENTRY_POINT: './src/js/App.js'
+  ENTRY_POINT: './src/js/main.js'
 };
 
 gulp.task('copy', function(){
@@ -27,7 +27,7 @@ gulp.task('watch', function() {
 
   var watcher  = watchify(browserify({
     entries: [path.ENTRY_POINT],
-    transform: [reactify],
+    transform: [babelify],
     debug: true,
     cache: {}, packageCache: {}, fullPaths: true
   }));
@@ -46,7 +46,7 @@ gulp.task('watch', function() {
 gulp.task('build', function(){
   browserify({
     entries: [path.ENTRY_POINT],
-    transform: [reactify],
+    transform: [babelify],
   })
     .bundle()
     .pipe(source(path.MINIFIED_OUT))
